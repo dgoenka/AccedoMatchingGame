@@ -1,5 +1,7 @@
 package com.divyanshgoenka.accedomatchinggame.singleton;
 
+import android.util.Log;
+
 import com.divyanshgoenka.accedomatchinggame.models.Card;
 
 import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
@@ -10,7 +12,9 @@ import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
 
 public class CurrentGame {
 
+    private static final String TAG = "CurrentGame";
     private Card[][] cardSet;
+    public int completedCards = 0;
 
     private CurrentGame(){}
 
@@ -56,17 +60,12 @@ public class CurrentGame {
     }
 
     public boolean isComplete() {
-        for(int i=0;i<DEFAULT_SIDE;i++){
-            for(int j=0;j<DEFAULT_SIDE;j++){
-                if(!cardSet[i][j].isRevealed) return false;
-            }
-        }
-        return true;
+        return (completedCards == DEFAULT_SIDE * DEFAULT_SIDE);
     }
 
     public void reset() {
         cardSet = Card.Utils.newCardSet();
         currentScore = 0;
-
+        completedCards = 0;
     }
 }

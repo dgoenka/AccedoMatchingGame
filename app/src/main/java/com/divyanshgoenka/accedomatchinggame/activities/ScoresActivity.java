@@ -3,8 +3,10 @@ package com.divyanshgoenka.accedomatchinggame.activities;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.divyanshgoenka.accedomatchinggame.AccedoMatchingGameApplication;
@@ -24,6 +26,7 @@ import butterknife.ButterKnife;
 public class ScoresActivity extends AppCompatActivity {
 
     private static final String SCORES = "SCORES";
+    private static final String TAG = "ScoresActivity";
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -63,10 +66,15 @@ public class ScoresActivity extends AppCompatActivity {
     }
 
     public void setView(List<Score> scores){
+        Log.e(TAG,"scores is "+scores);
         if(Validations.isEmptyOrNull(scores)){
             recyclerView.setVisibility(View.GONE);
             no_scores.setVisibility(View.VISIBLE);
         }else{
+            recyclerView.setVisibility(View.VISIBLE);
+            no_scores.setVisibility(View.GONE);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+            recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setAdapter(new Score.Adapter(ScoresActivity.this,scores));
         }
     }

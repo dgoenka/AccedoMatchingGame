@@ -30,13 +30,18 @@ public class Score implements Serializable {
     public long time;
     public long timeStamp;
 
+    @Override
+    public String toString() {
+        return name+" - "+time;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements AdapterBindUnbind<Score>{
 
         @BindView(R.id.name)
-        TextView name;
+        TextView nameTT;
 
         @BindView(R.id.score)
-        TextView score;
+        TextView scoreTT;
 
 
         public ViewHolder(View itemView) {
@@ -47,8 +52,8 @@ public class Score implements Serializable {
 
         @Override
         public void bind(Score score) {
-            name.setText(score.name);
-            name.setText(""+score);
+            nameTT.setText(score.name);
+            scoreTT.setText(""+score.time);
         }
 
         @Override
@@ -81,6 +86,7 @@ public class Score implements Serializable {
         public void onViewRecycled(ViewHolder holder) {
             holder.unbind();
         }
+
 
         @Override
         public int getItemCount() {

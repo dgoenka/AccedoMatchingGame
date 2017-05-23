@@ -7,14 +7,22 @@
     <TextView
         android:id="@+id/name"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:padding="15dp"
+        android:textSize="18dp"
+        android:text="hello"
         android:layout_weight="1"
-        android:gravity="start" />
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical|start" />
 
     <TextView
         android:id="@+id/score"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:textSize="18dp"
         android:layout_weight="1"
-        android:gravity="end" />
+        android:text="10"
+        android:padding="15dp"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical|end" />
 </LinearLayout>

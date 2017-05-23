@@ -26,6 +26,7 @@ public class CurrentSelection {
         return instance;
     }
 
+
     public boolean verify() {
         if (getSelections().size() == Constants.SELECTION_SIZE) {
             int initial = getSelections().get(0).value;
@@ -41,6 +42,7 @@ public class CurrentSelection {
             }
             CurrentGame.getInstance().modifyScore(Constants.POSITIVE_SCORE);
             CurrentSelection.getInstance().getSelections().clear();
+            CurrentGame.getInstance().completedCards += 2;
             return true;
         }
         return false;

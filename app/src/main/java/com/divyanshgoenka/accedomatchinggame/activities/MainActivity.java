@@ -3,6 +3,7 @@ package com.divyanshgoenka.accedomatchinggame.activities;
 import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -98,16 +99,29 @@ public class MainActivity extends AppCompatActivity implements CurrentScoreObser
         builder.setTitle(R.string.enter_your_name).setView(taskEditText).setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Score score = new Score();
+                final Score score = new Score();
                 score.name = taskEditText.getText().toString();
                 score.time = CurrentGame.getInstance().getCurrentScore();
                 score.timeStamp = System.currentTimeMillis();
-                ((AccedoMatchingGameApplication) getApplication()).getAppDatabase().scoreDao().insert(score);
                 CurrentGame.getInstance().reset();
-                startScoreActivity();
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        ((AccedoMatchingGameApplication) getApplication()).getAppDatabase().scoreDao().insert(score);
+                        return null;
+                    }
+
+                    public void onPostExecute() {
+                        startScoreActivity();
+
+                    }
+                }.execute();
             }
-        });
+        }).show();
     }
+
+
 
     private void startScoreActivity() {
         startActivity(new Intent(this, ScoresActivity.class));
