@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AccedoMatchingGame</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="high_scores">High Scores</string>
+    <string name="score">Score: %d</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="okay">OK</string>
+</resources>
