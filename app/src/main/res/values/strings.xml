@@ -7,4 +7,6 @@
     <string name="score">Score: %d</string>
     <string name="enter_your_name">Enter your name</string>
     <string name="okay">OK</string>
+    <string name="title_activity_scores">ScoresActivity</string>
+    <string name="no_scores">No Scores Available</string>
 </resources>

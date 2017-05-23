@@ -14,6 +14,7 @@ import com.divyanshgoenka.accedomatchinggame.util.Constants;
 import com.divyanshgoenka.accedomatchinggame.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.Collections;
 
 import butterknife.BindView;
@@ -25,7 +26,7 @@ import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
  * Created by divyanshgoenka on 23/05/17.
  */
 
-public class Card {
+public class Card implements Serializable{
 
     public int x;
     public int y;
@@ -68,7 +69,7 @@ public class Card {
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements CardObserver{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements CardObserver, AdapterBindUnbind<Card>{
 
         @BindView(R.id.card_image_view)
         ImageView cardImageView;
@@ -79,6 +80,7 @@ public class Card {
             ButterKnife.bind(this, itemView);
         }
 
+        @Override
         public void bind(final Card card) {
             Picasso.with(itemView.getContext()).load(card.isRevealed?card.value:R.drawable.card_bg).into(cardImageView);
             cardObj = card;
@@ -102,6 +104,7 @@ public class Card {
 
         }
 
+        @Override
         public void unbind() {
             Picasso.with(itemView.getContext()).cancelRequest(cardImageView);
             cardObj.setCardObserver(null);

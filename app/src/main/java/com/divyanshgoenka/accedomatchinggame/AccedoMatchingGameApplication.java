@@ -12,12 +12,28 @@ import com.divyanshgoenka.accedomatchinggame.database.AppDatabase;
 
 public class AccedoMatchingGameApplication extends Application {
 
+    private static AccedoMatchingGameApplication instance;
     AppDatabase appDatabase;
+
+    public AppDatabase getAppDatabase() {
+        return appDatabase;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "score-database")
                 .build();
+    }
+
+    public static AccedoMatchingGameApplication getInstance() {
+        return instance;
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        instance = null;
     }
 }

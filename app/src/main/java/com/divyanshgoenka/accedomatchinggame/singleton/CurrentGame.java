@@ -16,6 +16,10 @@ public class CurrentGame {
 
     private static CurrentGame instance;
 
+    public int getCurrentScore() {
+        return currentScore;
+    }
+
     private int currentScore = 0;
 
     public CurrentScoreObserver currentScoreObserver;
