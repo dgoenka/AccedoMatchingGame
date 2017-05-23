@@ -33,9 +33,6 @@ public class Card implements Serializable{
     public int value;
     public boolean isRevealed = false;
 
-    public CardObserver getCardObserver() {
-        return cardObserver;
-    }
 
     public void setCardObserver(CardObserver cardObserver) {
         this.cardObserver = cardObserver;
