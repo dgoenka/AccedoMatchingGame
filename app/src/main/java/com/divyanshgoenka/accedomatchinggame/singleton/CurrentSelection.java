@@ -41,6 +41,7 @@ public class CurrentSelection {
             }
             CurrentGame.getInstance().modifyScore(Constants.POSITIVE_SCORE);
             CurrentSelection.getInstance().getSelections().clear();
+            return true;
         }
         return false;
     }
