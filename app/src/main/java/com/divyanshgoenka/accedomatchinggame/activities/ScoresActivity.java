@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.divyanshgoenka.accedomatchinggame.AccedoMatchingGameApplication;
 import com.divyanshgoenka.accedomatchinggame.R;
+import com.divyanshgoenka.accedomatchinggame.database.OnDbOperationComplete;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
 import com.divyanshgoenka.accedomatchinggame.util.Validations;
 import com.google.gson.Gson;
@@ -23,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ScoresActivity extends AppCompatActivity {
+public class ScoresActivity extends BaseActivity {
 
     private static final String SCORES = "SCORES";
     private static final String TAG = "ScoresActivity";
@@ -38,17 +39,34 @@ public class ScoresActivity extends AppCompatActivity {
 
     List<Score> scores;
 
+    GetSetScoreTable getSetScoreTable;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scores);
-        ButterKnife.bind(this);
+    public int getLayoutId() {
+        return R.layout.activity_scores;
+    }
+
+    @Override
+    protected void setup(Bundle savedInstanceState) {
         setSupportActionBar(toolbar);
 
         if(savedInstanceState!=null)
             setFromBundle(savedInstanceState);
         else
-            new GetSetScoreTable().execute();
+           getSetScoreTable =  new GetSetScoreTable((scores)->setView(scores));
+        getSetScoreTable.execute();
+    }
+
+    @Override
+    protected void register() {
+        if(getSetScoreTable!=null)
+        getSetScoreTable.register((scores)->setView(scores));
+    }
+
+    @Override
+    protected void unregister() {
+        if(getSetScoreTable!=null)
+            getSetScoreTable.unregister();
     }
 
     public void setFromBundle(Bundle fromBundle) {
@@ -79,7 +97,14 @@ public class ScoresActivity extends AppCompatActivity {
         }
     }
 
-    class  GetSetScoreTable extends AsyncTask<Void,Void,List<Score>>{
+    public static class  GetSetScoreTable extends AsyncTask<Void,Void,List<Score>>{
+
+
+        OnDbOperationComplete<List<Score>> onDbOperationComplete;
+
+        public GetSetScoreTable(OnDbOperationComplete<List<Score>> onDbOperationComplete) {
+            this.onDbOperationComplete = onDbOperationComplete;
+        }
 
         @Override
         protected List<Score> doInBackground(Void... params) {
@@ -87,7 +112,15 @@ public class ScoresActivity extends AppCompatActivity {
         }
 
         public void onPostExecute(List<Score> scores){
-            setView(scores);
+            if(onDbOperationComplete!=null) onDbOperationComplete.onDbOperationComplete(scores);
+        }
+
+        public void register(OnDbOperationComplete<List<Score>> onDbOperationComplete) {
+            this.onDbOperationComplete = onDbOperationComplete;
+        }
+
+        public void unregister() {
+            onDbOperationComplete = null;
         }
     }
 }

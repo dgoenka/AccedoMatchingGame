@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.divyanshgoenka.accedomatchinggame.activities.MainActivity;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentGame;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentScoreObserver;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentSelection;
@@ -127,15 +128,14 @@ public class Card implements Serializable{
     public static class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
         Card[][] cards;
-        LayoutInflater layoutInflater;
 
-        public Adapter(Context context, Card[][] cards) {
-            layoutInflater = LayoutInflater.from(context);
+        public Adapter(Card[][] cards) {
             this.cards = cards;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             return new ViewHolder(layoutInflater.inflate(R.layout.card,parent,false));
         }
 
@@ -153,5 +153,6 @@ public class Card implements Serializable{
         public int getItemCount() {
             return DEFAULT_SIDE * DEFAULT_SIDE;
         }
+
     }
 }

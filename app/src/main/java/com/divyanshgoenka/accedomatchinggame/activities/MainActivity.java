@@ -1,12 +1,7 @@
 package com.divyanshgoenka.accedomatchinggame.activities;
 
-import android.arch.persistence.room.Room;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,19 +10,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.divyanshgoenka.accedomatchinggame.AccedoMatchingGameApplication;
+import com.divyanshgoenka.accedomatchinggame.database.ScoreInserter;
 import com.divyanshgoenka.accedomatchinggame.models.Card;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentGame;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentScoreObserver;
 import com.divyanshgoenka.accedomatchinggame.R;
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
 
@@ -35,7 +25,7 @@ import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class MainActivity extends AppCompatActivity implements CurrentScoreObserver {
+public class MainActivity extends BaseActivity implements CurrentScoreObserver {
 
     public static final String CARDS_STATE = "CARDS_STATE";
 
@@ -50,16 +40,28 @@ public class MainActivity extends AppCompatActivity implements CurrentScoreObser
 
     @BindView(R.id.high_scores)
     View high_scores;
+    private ScoreInserter scoreListener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
 
-        gridLayoutManager = new GridLayoutManager(this, DEFAULT_SIDE, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setHasFixedSize(true);
+    @Override
+    public void register(){
+        CurrentGame.getInstance().setCurrentScoreObserver(this);
+    }
+
+    @Override
+    public void unregister(){
+        CurrentGame.getInstance().setCurrentScoreObserver(null);
+        if(scoreListener!=null)
+         scoreListener.destroy();
+    }
+
+    @Override
+    public void setup(Bundle savedInstanceState) {
+        setupRecyclerView();
         high_scores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,23 +69,16 @@ public class MainActivity extends AppCompatActivity implements CurrentScoreObser
             }
         });
 
-        setup();
+
     }
 
-
-    public void onResume(){
-        super.onResume();
-        CurrentGame.getInstance().setCurrentScoreObserver(this);
-    }
-
-    public void onPause(){
-        super.onPause();
-        CurrentGame.getInstance().setCurrentScoreObserver(null);
-    }
-
-    private void setup() {
+    private void setupRecyclerView() {
+        gridLayoutManager = new GridLayoutManager(this, DEFAULT_SIDE, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setHasFixedSize(true);
         Card[][] card = CurrentGame.getInstance().getCardSet();
-        recyclerView.setAdapter(new Card.Adapter(this,card));
+        Card.Adapter cardAdapter = new Card.Adapter(card);
+        recyclerView.setAdapter(cardAdapter);
     }
 
     @Override
@@ -96,28 +91,14 @@ public class MainActivity extends AppCompatActivity implements CurrentScoreObser
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText taskEditText = new EditText(this);
 
-        builder.setTitle(R.string.enter_your_name).setView(taskEditText).setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final Score score = new Score();
-                score.name = taskEditText.getText().toString();
-                score.time = CurrentGame.getInstance().getCurrentScore();
-                score.timeStamp = System.currentTimeMillis();
-                CurrentGame.getInstance().reset();
-                new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        ((AccedoMatchingGameApplication) getApplication()).getAppDatabase().scoreDao().insert(score);
-                        return null;
-                    }
-
-                    public void onPostExecute() {
-                        startScoreActivity();
-
-                    }
-                }.execute();
-            }
+        builder.setTitle(R.string.enter_your_name).setView(taskEditText).setPositiveButton(R.string.okay, (dialog, which) -> {
+            final Score score1 = new Score();
+            score1.name = taskEditText.getText().toString();
+            score1.time = CurrentGame.getInstance().getCurrentScore();
+            score1.timeStamp = System.currentTimeMillis();
+            CurrentGame.getInstance().reset();
+            scoreListener = new ScoreInserter(score1,(result)->startScoreActivity());
+            scoreListener.execute();
         }).show();
     }
 
@@ -126,4 +107,5 @@ public class MainActivity extends AppCompatActivity implements CurrentScoreObser
     private void startScoreActivity() {
         startActivity(new Intent(this, ScoresActivity.class));
     }
+
 }
