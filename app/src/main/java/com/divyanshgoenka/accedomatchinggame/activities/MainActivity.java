@@ -2,8 +2,8 @@ package com.divyanshgoenka.accedomatchinggame.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,14 +12,16 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.divyanshgoenka.accedomatchinggame.R;
 import com.divyanshgoenka.accedomatchinggame.database.ScoreInserter;
 import com.divyanshgoenka.accedomatchinggame.models.Card;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentGame;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentScoreObserver;
-import com.divyanshgoenka.accedomatchinggame.R;
 
 import butterknife.BindView;
 
@@ -39,7 +41,6 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
-
 
 
     private ScoreInserter scoreListener;
@@ -87,7 +88,7 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
         displayScore(newScore);
     }
 
-    public void displayScore(int score){
+    public void displayScore(int score) {
         SpannableString s = new SpannableString(String.format(getString(R.string.score), score));
         s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
         scoreMenuItem.setTitle(s);
@@ -100,7 +101,12 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
 
     public void showScoreDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.enter_your_name).setView(R.layout.score_edit_text).setPositiveButton(R.string.okay, (dialog, which) -> {
+
+        View editTextView = View.inflate(this, R.layout.score_edit_text, null);
+        TextView messageTextView = (TextView) editTextView.findViewById(R.id.message);
+        messageTextView.setText(String.format(getString(R.string.you_scored), CurrentGame.getInstance().getCurrentScore()));
+
+        AlertDialog alertDialog = builder.setCustomTitle(View.inflate(this, R.layout.alert_title, null)).setView(editTextView).setPositiveButton(R.string.okay, (dialog, which) -> {
             EditText taskEditText = (EditText) ((AlertDialog) dialog).findViewById(R.id.score_edit_text);
             final Score score1 = new Score();
             score1.name = taskEditText.getText().toString();
@@ -110,6 +116,7 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
             scoreListener = new ScoreInserter(score1, (result) -> gameFinished());
             scoreListener.execute();
         }).show();
+
     }
 
     private void gameFinished() {
@@ -130,7 +137,6 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
         displayScore(CurrentGame.getInstance().getCurrentScore());
         return true;
     }
-
 
 
     @Override

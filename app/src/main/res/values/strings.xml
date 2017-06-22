@@ -10,4 +10,5 @@
     <string name="title_activity_scores">High Scores</string>
     <string name="no_scores">No Scores Available</string>
     <string name="new_game">New Game</string>
+    <string name="you_scored">Game Complete! You Scored %d !</string>
 </resources>
