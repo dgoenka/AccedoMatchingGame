@@ -1,19 +1,18 @@
 package com.divyanshgoenka.accedomatchinggame.activities;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.divyanshgoenka.accedomatchinggame.database.ScoreInserter;
 import com.divyanshgoenka.accedomatchinggame.models.Card;
@@ -33,6 +32,7 @@ import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
 public class MainActivity extends BaseActivity implements CurrentScoreObserver {
 
     public static final String CARDS_STATE = "CARDS_STATE";
+    private static final String TAG = "MainActivity";
 
     GridLayoutManager gridLayoutManager;
 
@@ -40,10 +40,11 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-    @BindView(R.id.score)
-    TextView score;
+
 
     private ScoreInserter scoreListener;
+
+    private MenuItem scoreMenuItem;
 
     @Override
     public int getLayoutId() {
@@ -68,6 +69,12 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
         startNewGame();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
     private void setupRecyclerView() {
         gridLayoutManager = new GridLayoutManager(this, DEFAULT_SIDE, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -77,7 +84,13 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
 
     @Override
     public void onScoreModified(int newScore) {
-        score.setText(String.format(getString(R.string.score), newScore));
+        displayScore(newScore);
+    }
+
+    public void displayScore(int score){
+        SpannableString s = new SpannableString(String.format(getString(R.string.score), score));
+        s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
+        scoreMenuItem.setTitle(s);
     }
 
     @Override
@@ -94,23 +107,37 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
             score1.time = CurrentGame.getInstance().getCurrentScore();
             score1.timeStamp = System.currentTimeMillis();
             CurrentGame.getInstance().reset();
-            scoreListener = new ScoreInserter(score1, (result) -> startScoreActivity());
+            scoreListener = new ScoreInserter(score1, (result) -> gameFinished());
             scoreListener.execute();
         }).show();
+    }
+
+    private void gameFinished() {
+        startOverNewGame();
+        startScoreActivity();
+    }
+
+    private void startOverNewGame() {
+        startNewGame();
+        displayScore(0);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_menu, menu);
+        this.scoreMenuItem = menu.findItem(R.id.score_item);
+        displayScore(CurrentGame.getInstance().getCurrentScore());
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_game:
-                startNewGame();
+                startOverNewGame();
                 break;
             case R.id.highScoresOptions:
                 startScoreActivity();
@@ -122,6 +149,7 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
     }
 
     private void startNewGame() {
+        CurrentGame.getInstance().reset();
         Card[][] card = CurrentGame.getInstance().getCardSet();
         Card.Adapter cardAdapter = new Card.Adapter(card);
         recyclerView.setAdapter(cardAdapter);

@@ -3,6 +3,8 @@ package com.divyanshgoenka.accedomatchinggame.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.Window;
 
 import butterknife.ButterKnife;
 
@@ -20,6 +22,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setup(savedInstanceState);
     }
+
+
 
     @Override
     protected void onPause() {
