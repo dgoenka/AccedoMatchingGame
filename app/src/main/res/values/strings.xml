@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AccedoMatchingGame</string>
+    <string name="app_name">Recard</string>
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -9,4 +9,5 @@
     <string name="okay">OK</string>
     <string name="title_activity_scores">ScoresActivity</string>
     <string name="no_scores">No Scores Available</string>
+    <string name="new_game">New Game</string>
 </resources>

@@ -11,9 +11,9 @@ import com.divyanshgoenka.accedomatchinggame.models.Score;
 public class ScoreInserter extends AsyncTask<Void, Void, Void> {
 
     private final Score score;
-    private OnDbOperationComplete onScoreInsertComplete;
+    private OnDbOperationComplete<Void> onScoreInsertComplete;
 
-    public ScoreInserter(Score score, OnDbOperationComplete onScoreInsertComplete) {
+    public ScoreInserter(Score score, OnDbOperationComplete<Void> onScoreInsertComplete) {
         this.score = score;
         this.onScoreInsertComplete = onScoreInsertComplete;
     }
@@ -26,7 +26,7 @@ public class ScoreInserter extends AsyncTask<Void, Void, Void> {
 
     public void onPostExecute(Void ignored) {
         if (onScoreInsertComplete != null)
-            onScoreInsertComplete.onDbOperationComplete();
+            onScoreInsertComplete.onDbOperationComplete(ignored);
     }
 
     public void destroy() {

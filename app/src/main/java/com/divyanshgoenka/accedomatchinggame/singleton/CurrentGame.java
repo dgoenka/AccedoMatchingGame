@@ -67,5 +67,6 @@ public class CurrentGame {
         cardSet = Card.Utils.newCardSet();
         currentScore = 0;
         completedCards = 0;
+        CurrentSelection.getInstance().reset();
     }
 }

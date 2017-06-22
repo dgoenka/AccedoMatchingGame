@@ -1,17 +1,14 @@
 package com.divyanshgoenka.accedomatchinggame.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.divyanshgoenka.accedomatchinggame.AccedoMatchingGameApplication;
 import com.divyanshgoenka.accedomatchinggame.R;
-import com.divyanshgoenka.accedomatchinggame.database.OnDbOperationComplete;
+import com.divyanshgoenka.accedomatchinggame.database.GetSetScoreTable;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
 import com.divyanshgoenka.accedomatchinggame.util.Validations;
 import com.google.gson.Gson;
@@ -22,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class ScoresActivity extends BaseActivity {
 
@@ -97,30 +93,4 @@ public class ScoresActivity extends BaseActivity {
         }
     }
 
-    public static class  GetSetScoreTable extends AsyncTask<Void,Void,List<Score>>{
-
-
-        OnDbOperationComplete<List<Score>> onDbOperationComplete;
-
-        public GetSetScoreTable(OnDbOperationComplete<List<Score>> onDbOperationComplete) {
-            this.onDbOperationComplete = onDbOperationComplete;
-        }
-
-        @Override
-        protected List<Score> doInBackground(Void... params) {
-            return AccedoMatchingGameApplication.getInstance().getAppDatabase().scoreDao().getAllScores();
-        }
-
-        public void onPostExecute(List<Score> scores){
-            if(onDbOperationComplete!=null) onDbOperationComplete.onDbOperationComplete(scores);
-        }
-
-        public void register(OnDbOperationComplete<List<Score>> onDbOperationComplete) {
-            this.onDbOperationComplete = onDbOperationComplete;
-        }
-
-        public void unregister() {
-            onDbOperationComplete = null;
-        }
-    }
 }
