@@ -70,11 +70,6 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
         startNewGame();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
 
     private void setupRecyclerView() {
         gridLayoutManager = new GridLayoutManager(this, DEFAULT_SIDE, LinearLayoutManager.HORIZONTAL, false);

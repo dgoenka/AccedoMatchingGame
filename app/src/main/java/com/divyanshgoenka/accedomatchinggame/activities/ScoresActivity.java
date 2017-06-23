@@ -1,11 +1,14 @@
 package com.divyanshgoenka.accedomatchinggame.activities;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.divyanshgoenka.accedomatchinggame.R;
 import com.divyanshgoenka.accedomatchinggame.database.GetSetScoreTable;
@@ -27,9 +30,6 @@ public class ScoresActivity extends BaseActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
     @BindView(R.id.no_scores)
     View no_scores;
 
@@ -44,33 +44,42 @@ public class ScoresActivity extends BaseActivity {
 
     @Override
     protected void setup(Bundle savedInstanceState) {
-        setSupportActionBar(toolbar);
-
-        if(savedInstanceState!=null)
+        if (savedInstanceState != null)
             setFromBundle(savedInstanceState);
         else
-           getSetScoreTable =  new GetSetScoreTable((scores)->setView(scores));
+            getSetScoreTable = new GetSetScoreTable((scores) -> setView(scores));
         getSetScoreTable.execute();
+        TextView title = getActionBarTextView();
+        title.setAllCaps(true);
+        title.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+        title.setGravity(Gravity.CENTER);
+        title.setTypeface(Typeface.DEFAULT_BOLD);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override
     protected void register() {
-        if(getSetScoreTable!=null)
-        getSetScoreTable.register((scores)->setView(scores));
+        if (getSetScoreTable != null)
+            getSetScoreTable.register((scores) -> setView(scores));
     }
 
     @Override
     protected void unregister() {
-        if(getSetScoreTable!=null)
+        if (getSetScoreTable != null)
             getSetScoreTable.unregister();
     }
 
     public void setFromBundle(Bundle fromBundle) {
         String json = fromBundle.getString(SCORES);
-        Type scoresArrayList  = new TypeToken<ArrayList<Score>>() {
+        Type scoresArrayList = new TypeToken<ArrayList<Score>>() {
         }.getType();
-        scores = new Gson().fromJson(json,scoresArrayList);
-        recyclerView.setAdapter(new Score.Adapter(ScoresActivity.this,scores));
+        scores = new Gson().fromJson(json, scoresArrayList);
+        recyclerView.setAdapter(new Score.Adapter(ScoresActivity.this, scores));
     }
 
     @Override
@@ -79,17 +88,17 @@ public class ScoresActivity extends BaseActivity {
         outState.putString(SCORES, new Gson().toJson(scores));
     }
 
-    public void setView(List<Score> scores){
-        Log.e(TAG,"scores is "+scores);
-        if(Validations.isEmptyOrNull(scores)){
+    public void setView(List<Score> scores) {
+        Log.e(TAG, "scores is " + scores);
+        if (Validations.isEmptyOrNull(scores)) {
             recyclerView.setVisibility(View.GONE);
             no_scores.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             recyclerView.setVisibility(View.VISIBLE);
             no_scores.setVisibility(View.GONE);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.setAdapter(new Score.Adapter(ScoresActivity.this,scores));
+            recyclerView.setAdapter(new Score.Adapter(ScoresActivity.this, scores));
         }
     }
 
