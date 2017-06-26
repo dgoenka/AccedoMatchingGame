@@ -3,12 +3,14 @@ package com.divyanshgoenka.accedomatchinggame.models;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.divyanshgoenka.accedomatchinggame.AccedoMatchingGameApplication;
 import com.divyanshgoenka.accedomatchinggame.R;
 import com.divyanshgoenka.accedomatchinggame.util.Validations;
 
@@ -18,24 +20,23 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
-
 /**
  * Created by divyanshgoenka on 23/05/17.
  */
 @Entity
 public class Score implements Serializable {
-    public @PrimaryKey String id;
+    public @PrimaryKey
+    String id;
     public String name;
     public long time;
     public long timeStamp;
 
     @Override
     public String toString() {
-        return name+" - "+time;
+        return name + " - " + time;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements AdapterBindUnbind<Score>{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements AdapterBindUnbind<Score> {
 
         @BindView(R.id.name)
         TextView nameTT;
@@ -51,14 +52,17 @@ public class Score implements Serializable {
 
 
         @Override
-        public void bind(Score score) {
+        public void bind(Score score, int position) {
             nameTT.setText(score.name);
-            scoreTT.setText(""+score.time);
+            scoreTT.setText("" + score.time);
+            itemView.setBackgroundColor(position % 2 == 0 ? Color.TRANSPARENT : AccedoMatchingGameApplication.getInstance().getResources().getColor(R.color.grey));
+
         }
+
 
         @Override
         public void unbind() {
-
+            itemView.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
@@ -74,12 +78,12 @@ public class Score implements Serializable {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(layoutInflater.inflate(R.layout.score,parent,false));
+            return new ViewHolder(layoutInflater.inflate(R.layout.score, parent, false));
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.bind(scoreList.get(position));
+            holder.bind(scoreList.get(position), position);
         }
 
         @Override
@@ -90,7 +94,7 @@ public class Score implements Serializable {
 
         @Override
         public int getItemCount() {
-            return Validations.isEmptyOrNull(scoreList)?0:scoreList.size();
+            return Validations.isEmptyOrNull(scoreList) ? 0 : scoreList.size();
         }
     }
 }

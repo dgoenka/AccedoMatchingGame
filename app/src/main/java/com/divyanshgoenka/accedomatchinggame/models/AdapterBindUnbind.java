@@ -5,6 +5,7 @@ package com.divyanshgoenka.accedomatchinggame.models;
  */
 
 public interface AdapterBindUnbind<T> {
-    void bind(T t);
+    void bind(T t, int position);
+
     void unbind();
 }
