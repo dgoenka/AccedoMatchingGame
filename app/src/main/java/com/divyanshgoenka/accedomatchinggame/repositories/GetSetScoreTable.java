@@ -1,8 +1,9 @@
-package com.divyanshgoenka.accedomatchinggame.database;
+package com.divyanshgoenka.accedomatchinggame.repositories;
 
 import android.os.AsyncTask;
 
 import com.divyanshgoenka.accedomatchinggame.AccedoMatchingGameApplication;
+import com.divyanshgoenka.accedomatchinggame.interfaces.listeners.OnDbOperationComplete;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
 
 import java.util.List;

@@ -5,9 +5,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.divyanshgoenka.accedomatchinggame.R;
-import com.divyanshgoenka.accedomatchinggame.models.AdapterBindUnbind;
+import com.divyanshgoenka.accedomatchinggame.interfaces.listeners.OnAdapterBindUnbind;
+import com.divyanshgoenka.accedomatchinggame.interfaces.observers.CardObserver;
 import com.divyanshgoenka.accedomatchinggame.models.Card;
-import com.divyanshgoenka.accedomatchinggame.models.CardObserver;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentGame;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentSelection;
 import com.squareup.picasso.Picasso;
@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 /**
  * Created by divyanshgoenka on 02/07/17.
  */
-public class CardViewHolder extends RecyclerView.ViewHolder implements CardObserver, AdapterBindUnbind<Card> {
+public class CardViewHolder extends RecyclerView.ViewHolder implements CardObserver, OnAdapterBindUnbind<Card> {
 
     @BindView(R.id.card_image_view)
     ImageView cardImageView;

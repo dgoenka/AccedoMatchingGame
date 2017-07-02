@@ -1,7 +1,7 @@
 package com.divyanshgoenka.accedomatchinggame.singleton;
 
+import com.divyanshgoenka.accedomatchinggame.interfaces.observers.CurrentScoreObserver;
 import com.divyanshgoenka.accedomatchinggame.models.Card;
-import com.divyanshgoenka.accedomatchinggame.models.CurrentScoreObserver;
 import com.divyanshgoenka.accedomatchinggame.utils.CardUtils;
 
 import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
@@ -16,7 +16,8 @@ public class CurrentGame {
     private Card[][] cardSet;
     public int completedCards = 0;
 
-    private CurrentGame(){}
+    private CurrentGame() {
+    }
 
     private static CurrentGame instance;
 
@@ -36,26 +37,26 @@ public class CurrentGame {
         this.currentScoreObserver = currentScoreObserver;
     }
 
-    public static CurrentGame getInstance(){
-        if(instance == null)
+    public static CurrentGame getInstance() {
+        if (instance == null)
             instance = new CurrentGame();
         return instance;
     }
 
-    public void modifyScore(int modify){
+    public void modifyScore(int modify) {
         currentScore += modify;
-        if(currentScoreObserver!=null)
+        if (currentScoreObserver != null)
             currentScoreObserver.onScoreModified(currentScore);
     }
 
-    public void notifyComplete(){
-        if(currentScoreObserver!=null)
+    public void notifyComplete() {
+        if (currentScoreObserver != null)
             currentScoreObserver.onGameComplete();
     }
 
     public Card[][] getCardSet() {
-        if(cardSet==null)
-        cardSet = CardUtils.newCardSet();
+        if (cardSet == null)
+            cardSet = CardUtils.newCardSet();
         return cardSet;
     }
 

@@ -1,6 +1,4 @@
-package com.divyanshgoenka.accedomatchinggame.database;
-
-import java.util.Objects;
+package com.divyanshgoenka.accedomatchinggame.interfaces.listeners;
 
 /**
  * Created by divyanshgoenka on 14/06/17.

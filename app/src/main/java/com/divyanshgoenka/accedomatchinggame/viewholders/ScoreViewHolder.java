@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.divyanshgoenka.accedomatchinggame.AccedoMatchingGameApplication;
 import com.divyanshgoenka.accedomatchinggame.R;
-import com.divyanshgoenka.accedomatchinggame.models.AdapterBindUnbind;
+import com.divyanshgoenka.accedomatchinggame.interfaces.listeners.OnAdapterBindUnbind;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
 
 import butterknife.BindView;
@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 /**
  * Created by divyanshgoenka on 02/07/17.
  */
-public class ScoreViewHolder extends RecyclerView.ViewHolder implements AdapterBindUnbind<Score> {
+public class ScoreViewHolder extends RecyclerView.ViewHolder implements OnAdapterBindUnbind<Score> {
 
     @BindView(R.id.name)
     TextView nameTT;

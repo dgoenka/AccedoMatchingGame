@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.divyanshgoenka.accedomatchinggame.R;
 import com.divyanshgoenka.accedomatchinggame.adapters.ScoreAdapter;
-import com.divyanshgoenka.accedomatchinggame.database.GetSetScoreTable;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
+import com.divyanshgoenka.accedomatchinggame.repositories.GetSetScoreTable;
 import com.divyanshgoenka.accedomatchinggame.util.Validations;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

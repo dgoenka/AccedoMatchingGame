@@ -1,15 +1,8 @@
 package com.divyanshgoenka.accedomatchinggame.models;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-
-import com.divyanshgoenka.accedomatchinggame.R;
-import com.divyanshgoenka.accedomatchinggame.viewholders.CardViewHolder;
+import com.divyanshgoenka.accedomatchinggame.interfaces.observers.CardObserver;
 
 import java.io.Serializable;
-
-import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
 
 /**
  * Created by divyanshgoenka on 23/05/17.

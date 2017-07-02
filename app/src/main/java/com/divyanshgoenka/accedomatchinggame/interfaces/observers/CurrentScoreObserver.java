@@ -1,4 +1,4 @@
-package com.divyanshgoenka.accedomatchinggame.models;
+package com.divyanshgoenka.accedomatchinggame.interfaces.observers;
 
 /**
  * Created by divyanshgoenka on 23/05/17.
