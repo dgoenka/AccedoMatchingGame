@@ -1,8 +1,8 @@
 package com.divyanshgoenka.accedomatchinggame.singleton;
 
-import android.util.Log;
-
 import com.divyanshgoenka.accedomatchinggame.models.Card;
+import com.divyanshgoenka.accedomatchinggame.models.CurrentScoreObserver;
+import com.divyanshgoenka.accedomatchinggame.utils.CardUtils;
 
 import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
 
@@ -55,7 +55,7 @@ public class CurrentGame {
 
     public Card[][] getCardSet() {
         if(cardSet==null)
-        cardSet = Card.Utils.newCardSet();
+        cardSet = CardUtils.newCardSet();
         return cardSet;
     }
 
@@ -64,7 +64,7 @@ public class CurrentGame {
     }
 
     public void reset() {
-        cardSet = Card.Utils.newCardSet();
+        cardSet = CardUtils.newCardSet();
         currentScore = 0;
         completedCards = 0;
         CurrentSelection.getInstance().reset();

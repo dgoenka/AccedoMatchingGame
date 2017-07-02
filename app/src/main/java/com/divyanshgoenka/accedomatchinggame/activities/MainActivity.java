@@ -17,11 +17,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.divyanshgoenka.accedomatchinggame.R;
+import com.divyanshgoenka.accedomatchinggame.adapters.CardAdapter;
 import com.divyanshgoenka.accedomatchinggame.database.ScoreInserter;
 import com.divyanshgoenka.accedomatchinggame.models.Card;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
 import com.divyanshgoenka.accedomatchinggame.singleton.CurrentGame;
-import com.divyanshgoenka.accedomatchinggame.singleton.CurrentScoreObserver;
+import com.divyanshgoenka.accedomatchinggame.models.CurrentScoreObserver;
 
 import butterknife.BindView;
 
@@ -104,9 +105,9 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
         AlertDialog alertDialog = builder.setCustomTitle(View.inflate(this, R.layout.alert_title, null)).setView(editTextView).setPositiveButton(R.string.okay, (dialog, which) -> {
             EditText taskEditText = (EditText) ((AlertDialog) dialog).findViewById(R.id.score_edit_text);
             final Score score1 = new Score();
-            score1.name = taskEditText.getText().toString();
-            score1.time = CurrentGame.getInstance().getCurrentScore();
-            score1.timeStamp = System.currentTimeMillis();
+            score1.setName(taskEditText.getText().toString());
+            score1.setTime(CurrentGame.getInstance().getCurrentScore());
+            score1.setTimeStamp(System.currentTimeMillis());
             CurrentGame.getInstance().reset();
             scoreListener = new ScoreInserter(score1, (result) -> gameFinished());
             scoreListener.execute();
@@ -152,7 +153,7 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
     private void startNewGame() {
         CurrentGame.getInstance().reset();
         Card[][] card = CurrentGame.getInstance().getCardSet();
-        Card.Adapter cardAdapter = new Card.Adapter(card);
+        CardAdapter cardAdapter = new CardAdapter(card);
         recyclerView.setAdapter(cardAdapter);
     }
 

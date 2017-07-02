@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.divyanshgoenka.accedomatchinggame.R;
+import com.divyanshgoenka.accedomatchinggame.adapters.ScoreAdapter;
 import com.divyanshgoenka.accedomatchinggame.database.GetSetScoreTable;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
 import com.divyanshgoenka.accedomatchinggame.util.Validations;
@@ -44,11 +45,20 @@ public class ScoresActivity extends BaseActivity {
 
     @Override
     protected void setup(Bundle savedInstanceState) {
-        if (savedInstanceState != null)
+        setupScoreTable(savedInstanceState);
+        setupTitleBar();
+    }
+
+    public void setupScoreTable(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
             setFromBundle(savedInstanceState);
-        else
+        } else {
             getSetScoreTable = new GetSetScoreTable((scores) -> setView(scores));
-        getSetScoreTable.execute();
+            getSetScoreTable.execute();
+        }
+    }
+
+    public void setupTitleBar() {
         TextView title = getActionBarTextView();
         title.setAllCaps(true);
         title.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -79,7 +89,7 @@ public class ScoresActivity extends BaseActivity {
         Type scoresArrayList = new TypeToken<ArrayList<Score>>() {
         }.getType();
         scores = new Gson().fromJson(json, scoresArrayList);
-        recyclerView.setAdapter(new Score.Adapter(ScoresActivity.this, scores));
+        recyclerView.setAdapter(new ScoreAdapter(ScoresActivity.this, scores));
     }
 
     @Override
@@ -98,7 +108,7 @@ public class ScoresActivity extends BaseActivity {
             no_scores.setVisibility(View.GONE);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.setAdapter(new Score.Adapter(ScoresActivity.this, scores));
+            recyclerView.setAdapter(new ScoreAdapter(ScoresActivity.this, scores));
         }
     }
 

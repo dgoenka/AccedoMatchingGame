@@ -14,6 +14,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * This abstract class overrides methods and uses
+ * <p>
+ * <p>
+ * <p>
  * Created by divyanshgoenka on 11/06/17.
  */
 

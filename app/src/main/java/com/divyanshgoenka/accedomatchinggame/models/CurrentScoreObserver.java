@@ -1,4 +1,4 @@
-package com.divyanshgoenka.accedomatchinggame.singleton;
+package com.divyanshgoenka.accedomatchinggame.models;
 
 /**
  * Created by divyanshgoenka on 23/05/17.
