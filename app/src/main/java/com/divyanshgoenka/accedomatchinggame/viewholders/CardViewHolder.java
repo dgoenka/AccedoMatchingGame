@@ -5,11 +5,11 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.divyanshgoenka.accedomatchinggame.R;
+import com.divyanshgoenka.accedomatchinggame.gameplay.CurrentGame;
+import com.divyanshgoenka.accedomatchinggame.gameplay.CurrentSelection;
 import com.divyanshgoenka.accedomatchinggame.interfaces.listeners.OnAdapterBindUnbind;
 import com.divyanshgoenka.accedomatchinggame.interfaces.observers.CardObserver;
 import com.divyanshgoenka.accedomatchinggame.models.Card;
-import com.divyanshgoenka.accedomatchinggame.singleton.CurrentGame;
-import com.divyanshgoenka.accedomatchinggame.singleton.CurrentSelection;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -41,7 +41,7 @@ public class CardViewHolder extends RecyclerView.ViewHolder implements CardObser
                     Picasso.with(itemView.getContext()).load(cardObj.value).into(cardImageView);
                     cardObj.isRevealed = true;
                     CurrentSelection.getInstance().getSelections().add(cardObj);
-                    if (CurrentSelection.getInstance().verify()) {
+                    if (CurrentSelection.getInstance().verifySelection()) {
                         if (CurrentGame.getInstance().isComplete())
                             CurrentGame.getInstance().getCurrentScoreObserver().onGameComplete();
                     }

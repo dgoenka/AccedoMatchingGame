@@ -50,7 +50,10 @@ public class Score implements Serializable {
     }
 
     public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
+        if (timeStamp > 0)
+            this.timeStamp = timeStamp;
+        else
+            throw new IllegalArgumentException("Invalid timestamp");
     }
 
 }

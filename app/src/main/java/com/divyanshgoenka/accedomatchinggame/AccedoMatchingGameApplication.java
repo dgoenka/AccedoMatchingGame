@@ -2,7 +2,6 @@ package com.divyanshgoenka.accedomatchinggame;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
 
 import com.divyanshgoenka.accedomatchinggame.database.AppDatabase;
 
@@ -13,7 +12,7 @@ import com.divyanshgoenka.accedomatchinggame.database.AppDatabase;
 public class AccedoMatchingGameApplication extends Application {
 
     private static AccedoMatchingGameApplication instance;
-    AppDatabase appDatabase;
+    private AppDatabase appDatabase;
 
     public AppDatabase getAppDatabase() {
         return appDatabase;
@@ -35,5 +34,6 @@ public class AccedoMatchingGameApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
         instance = null;
+        appDatabase.close();
     }
 }

@@ -1,4 +1,4 @@
-package com.divyanshgoenka.accedomatchinggame.singleton;
+package com.divyanshgoenka.accedomatchinggame.gameplay;
 
 import com.divyanshgoenka.accedomatchinggame.interfaces.observers.CurrentScoreObserver;
 import com.divyanshgoenka.accedomatchinggame.models.Card;

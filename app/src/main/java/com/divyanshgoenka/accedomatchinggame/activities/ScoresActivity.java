@@ -47,6 +47,11 @@ public class ScoresActivity extends BaseActivity {
     protected void setup(Bundle savedInstanceState) {
         setupScoreTable(savedInstanceState);
         setupTitleBar();
+        setupActionBar();
+    }
+
+    private void setupActionBar() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void setupScoreTable(Bundle savedInstanceState) {
@@ -65,6 +70,7 @@ public class ScoresActivity extends BaseActivity {
         title.setGravity(Gravity.CENTER);
         title.setTypeface(Typeface.DEFAULT_BOLD);
     }
+
 
     @Override
     protected void onResume() {

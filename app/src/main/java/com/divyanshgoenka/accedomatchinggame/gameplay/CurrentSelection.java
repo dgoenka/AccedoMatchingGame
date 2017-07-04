@@ -1,4 +1,4 @@
-package com.divyanshgoenka.accedomatchinggame.singleton;
+package com.divyanshgoenka.accedomatchinggame.gameplay;
 
 import com.divyanshgoenka.accedomatchinggame.models.Card;
 import com.divyanshgoenka.accedomatchinggame.util.Constants;
@@ -18,21 +18,21 @@ public class CurrentSelection {
         return selections;
     }
 
-    private CurrentSelection(){}
+    private CurrentSelection() {
+    }
 
-    public static synchronized CurrentSelection getInstance(){
-        if(instance==null)
+    public static synchronized CurrentSelection getInstance() {
+        if (instance == null)
             instance = new CurrentSelection();
         return instance;
     }
 
 
-    public boolean verify() {
+    public boolean verifySelection() {
         if (getSelections().size() == Constants.SELECTION_SIZE) {
             int initial = getSelections().get(0).value;
-            for(int i=1;i<getSelections().size();i++)
-            {
-                if(getSelections().get(i).value == initial){
+            for (int i = 1; i < getSelections().size(); i++) {
+                if (getSelections().get(i).value == initial) {
                     continue;
                 } else {
                     CurrentGame.getInstance().modifyScore(Constants.NEGATIVE_SCORE);
@@ -49,7 +49,7 @@ public class CurrentSelection {
     }
 
     public void reset() {
-        for(int i = 0;i<selections.size();i++){
+        for (int i = 0; i < selections.size(); i++) {
             selections.get(i).notifyReset();
         }
         selections.clear();

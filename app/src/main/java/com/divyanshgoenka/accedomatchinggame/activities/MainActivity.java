@@ -18,11 +18,11 @@ import android.widget.TextView;
 
 import com.divyanshgoenka.accedomatchinggame.R;
 import com.divyanshgoenka.accedomatchinggame.adapters.CardAdapter;
+import com.divyanshgoenka.accedomatchinggame.gameplay.CurrentGame;
 import com.divyanshgoenka.accedomatchinggame.interfaces.observers.CurrentScoreObserver;
 import com.divyanshgoenka.accedomatchinggame.models.Card;
 import com.divyanshgoenka.accedomatchinggame.models.Score;
 import com.divyanshgoenka.accedomatchinggame.repositories.ScoreInserter;
-import com.divyanshgoenka.accedomatchinggame.singleton.CurrentGame;
 
 import butterknife.BindView;
 
