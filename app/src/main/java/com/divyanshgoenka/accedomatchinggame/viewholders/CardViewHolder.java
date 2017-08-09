@@ -4,13 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.divyanshgoenka.accedomatchinggame.R;
 import com.divyanshgoenka.accedomatchinggame.gameplay.CurrentGame;
 import com.divyanshgoenka.accedomatchinggame.gameplay.CurrentSelection;
 import com.divyanshgoenka.accedomatchinggame.interfaces.listeners.OnAdapterBindUnbind;
 import com.divyanshgoenka.accedomatchinggame.interfaces.observers.CardObserver;
 import com.divyanshgoenka.accedomatchinggame.models.Card;
-import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,14 +31,14 @@ public class CardViewHolder extends RecyclerView.ViewHolder implements CardObser
 
     @Override
     public void bind(final Card card, int position) {
-        Picasso.with(itemView.getContext()).load(card.isRevealed ? card.value : R.drawable.card_bg).into(cardImageView);
+        Glide.with(itemView.getContext()).load(card.isRevealed ? card.value : R.drawable.card_bg).into(cardImageView);
         cardObj = card;
         cardObj.setCardObserver(this);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!cardObj.isRevealed) {
-                    Picasso.with(itemView.getContext()).load(cardObj.value).into(cardImageView);
+                    Glide.with(itemView.getContext()).load(cardObj.value).into(cardImageView);
                     cardObj.isRevealed = true;
                     CurrentSelection.getInstance().getSelections().add(cardObj);
                     if (CurrentSelection.getInstance().verifySelection()) {
@@ -55,19 +55,14 @@ public class CardViewHolder extends RecyclerView.ViewHolder implements CardObser
 
     @Override
     public void unbind() {
-        Picasso.with(itemView.getContext()).cancelRequest(cardImageView);
+        Glide.with(itemView.getContext()).clear(cardImageView);
         cardObj.setCardObserver(null);
         cardObj = null;
     }
 
     @Override
     public void notifyReset() {
-        itemView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Picasso.with(itemView.getContext()).load(R.drawable.card_bg).into(cardImageView);
-            }
-        }, 800);
+        itemView.postDelayed(() -> Glide.with(itemView.getContext()).load(R.drawable.card_bg).into(cardImageView), 800);
         cardObj.isRevealed = false;
     }
 }
