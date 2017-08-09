@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -153,7 +154,9 @@ public class MainActivity extends BaseActivity implements CurrentScoreObserver {
     private void startNewGame() {
         CurrentGame.getInstance().reset();
         Card[][] card = CurrentGame.getInstance().getCardSet();
-        CardAdapter cardAdapter = new CardAdapter(card);
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        CardAdapter cardAdapter = new CardAdapter(card, displaymetrics);
         recyclerView.setAdapter(cardAdapter);
     }
 

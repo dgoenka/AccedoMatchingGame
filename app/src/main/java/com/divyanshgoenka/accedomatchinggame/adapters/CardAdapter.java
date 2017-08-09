@@ -1,7 +1,9 @@
 package com.divyanshgoenka.accedomatchinggame.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.divyanshgoenka.accedomatchinggame.R;
@@ -17,15 +19,24 @@ import static com.divyanshgoenka.accedomatchinggame.util.Constants.DEFAULT_SIDE;
 public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
 
     Card[][] cards;
+    private DisplayMetrics displaymetrics;
 
-    public CardAdapter(Card[][] cards) {
+    public CardAdapter(Card[][] cards, DisplayMetrics displayMetrics) {
         this.cards = cards;
+        this.displaymetrics = displayMetrics;
     }
 
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        return new CardViewHolder(layoutInflater.inflate(R.layout.card, parent, false));
+        View card = layoutInflater.inflate(R.layout.card, parent, false);
+
+        int ht = displaymetrics.heightPixels - parent.getContext().getResources().getDimensionPixelSize(R.dimen.card_height_space_to_leave);
+        int wt = displaymetrics.widthPixels;
+
+        card.getLayoutParams().height = ht / DEFAULT_SIDE;
+        card.getLayoutParams().width = wt / DEFAULT_SIDE;
+        return new CardViewHolder(card);
     }
 
     @Override
